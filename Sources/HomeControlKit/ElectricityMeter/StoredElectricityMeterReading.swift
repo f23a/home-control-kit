@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct StoredElectricityMeterReading: Codable {
+public struct StoredElectricityMeterReading: Codable, Identifiable {
     public var id: UUID
     public var reading: ElectricityMeterReading
     public var createdAt: Date

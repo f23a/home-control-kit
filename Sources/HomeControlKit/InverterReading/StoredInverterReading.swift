@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct StoredInverterReading: Codable {
+public struct StoredInverterReading: Codable, Identifiable {
     public var id: UUID
     public var reading: InverterReading
     public var createdAt: Date
