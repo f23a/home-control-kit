@@ -1,6 +1,6 @@
 //
 //  WebSocketDidRegisterMessage.swift.swift
-//  HomeControlKit
+//  home-control-kit
 //
 //  Created by Christoph Pageler on 21.09.24.
 //
@@ -8,7 +8,7 @@
 import Foundation
 
 public struct WebSocketDidRegisterMessage: WebSocketMessage {
-    public var identifier: String { "DidRegisterMessage" }
+    public var identifier: String { "WebSocketDidRegisterMessage" }
     public var content: Content
 
     public init(id: UUID) {
