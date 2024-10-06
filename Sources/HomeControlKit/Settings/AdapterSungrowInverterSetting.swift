@@ -8,5 +8,9 @@
 import Foundation
 
 public struct AdapterSungrowInverterSetting: Codable {
-    var updateTimerInterval: TimeInterval
+    public var updateTimerInterval: TimeInterval
+
+    public init(updateTimerInterval: TimeInterval) {
+        self.updateTimerInterval = updateTimerInterval
+    }
 }
