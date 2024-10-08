@@ -128,24 +128,27 @@ public extension InverterReading {
         return Self.formatter.string(from: NSNumber(value: value)) ?? ""
     }
 
-    func formatted(_ keyPath: KeyPath<InverterReading, Double>) -> String {
+    func formatted(
+        _ keyPath: KeyPath<InverterReading, Double>,
+        options: InverterReadingFormattingOptions = []
+    ) -> String {
         let value = self[keyPath: keyPath]
         switch keyPath {
-        case 
+        case
             \.batteryHealth,
             \.batteryLevel:
-            return formatted(value / 100, numberStyle: .percent, suffix: " %")
-        case 
+            return formatted(value, numberStyle: .percent, suffix: " %")
+        case
             \.batteryTemperature:
             return formatted(value, suffix: " °C")
-        case 
+        case
             \.dailyPVGeneration,
             \.dailyImportEnergy,
             \.dailyExportEnergy,
             \.dailyDirectEnergyConsumption,
             \.dailyBatteryDischargeEnergy:
             return formatted(value, suffix: " kWh")
-        case 
+        case
             \.solarToBattery,
             \.solarToLoad,
             \.solarToGrid,
@@ -159,9 +162,63 @@ public extension InverterReading {
             \.toLoad,
             \.toGrid,
             \.toBattery:
-            return formatted(value, suffix: " W")
+            if options.contains(.short) {
+                return formatted(value / 1000, suffix: " kW")
+            } else {
+                return formatted(value, suffix: " W")
+            }
         default:
             return formatted(value)
         }
+    }
+}
+
+public struct InverterReadingFormattingOptions: OptionSet {
+    public let rawValue: Int
+
+    public init(rawValue: Int) {
+        self.rawValue = rawValue
+    }
+
+    static let short = InverterReadingFormattingOptions(rawValue: 1 << 0)
+}
+
+public extension InverterReading {
+    static func sample(
+        readingAt: Date = Date(),
+        solarToBattery: Double = 0.0,
+        solarToLoad: Double = 0.0,
+        solarToGrid: Double = 0.0,
+        batteryToLoad: Double = 0.0,
+        batteryToGrid: Double = 0.0,
+        gridToBattery: Double = 0.0,
+        gridToLoad: Double = 0.0,
+        batteryLevel: Double = 0.0,
+        batteryHealth: Double = 0.0,
+        batteryTemperature: Double = 0.0,
+        dailyPVGeneration: Double = 0.0,
+        dailyImportEnergy: Double = 0.0,
+        dailyExportEnergy: Double = 0.0,
+        dailyDirectEnergyConsumption: Double = 0.0,
+        dailyBatteryDischargeEnergy: Double = 0.0
+    ) -> InverterReading {
+        .init(
+            readingAt: readingAt,
+            solarToBattery: solarToBattery,
+            solarToLoad: solarToLoad,
+            solarToGrid: solarToGrid,
+            batteryToLoad: batteryToLoad,
+            batteryToGrid: batteryToGrid,
+            gridToBattery: gridToBattery,
+            gridToLoad: gridToLoad,
+            batteryLevel: batteryLevel,
+            batteryHealth: batteryHealth,
+            batteryTemperature: batteryTemperature,
+            dailyPVGeneration: dailyPVGeneration,
+            dailyImportEnergy: dailyImportEnergy,
+            dailyExportEnergy: dailyExportEnergy,
+            dailyDirectEnergyConsumption: dailyDirectEnergyConsumption,
+            dailyBatteryDischargeEnergy: dailyBatteryDischargeEnergy
+        )
     }
 }
