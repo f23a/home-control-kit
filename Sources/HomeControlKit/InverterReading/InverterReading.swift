@@ -180,7 +180,7 @@ public struct InverterReadingFormattingOptions: OptionSet {
         self.rawValue = rawValue
     }
 
-    static let short = InverterReadingFormattingOptions(rawValue: 1 << 0)
+    public static let short = InverterReadingFormattingOptions(rawValue: 1 << 0)
 }
 
 public extension InverterReading {
