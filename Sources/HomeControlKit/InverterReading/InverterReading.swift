@@ -117,14 +117,19 @@ public extension InverterReading {
     private static var formatter = {
         let numberFormatter = NumberFormatter()
         numberFormatter.minimumFractionDigits = 0
-        numberFormatter.maximumFractionDigits = 1
         return numberFormatter
     }()
 
-    private func formatted(_ value: Double, numberStyle: NumberFormatter.Style = .decimal, suffix: String = "") -> String {
+    private func formatted(
+        _ value: Double,
+        numberStyle: NumberFormatter.Style = .decimal,
+        suffix: String = "",
+        maximumFractionDigits: Int = 1
+    ) -> String {
         Self.formatter.numberStyle = numberStyle
         Self.formatter.negativeSuffix = suffix
         Self.formatter.positiveSuffix = suffix
+        Self.formatter.maximumFractionDigits = maximumFractionDigits
         return Self.formatter.string(from: NSNumber(value: value)) ?? ""
     }
 
@@ -137,7 +142,11 @@ public extension InverterReading {
         case
             \.batteryHealth,
             \.batteryLevel:
-            return formatted(value, numberStyle: .percent, suffix: " %")
+            if options.contains(.short) {
+                return formatted(value, numberStyle: .percent, suffix: " %", maximumFractionDigits: 0)
+            } else {
+                return formatted(value, numberStyle: .percent, suffix: " %")
+            }
         case
             \.batteryTemperature:
             return formatted(value, suffix: " °C")
