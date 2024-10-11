@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct InverterReading: Codable {
+public struct InverterReading: Codable, Equatable, Hashable {
     public var readingAt: Date
 
     public var solarToBattery: Double

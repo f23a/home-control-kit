@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct ElectricityMeterReading: Codable {
+public struct ElectricityMeterReading: Codable, Equatable, Hashable {
     public var readingAt: Date
     public var power: Double
 
