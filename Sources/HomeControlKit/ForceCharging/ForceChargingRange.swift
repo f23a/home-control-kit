@@ -27,4 +27,6 @@ public struct ForceChargingRange: Codable, Equatable, Hashable {
         self.state = state
         self.source = source
     }
+
+    public var dateRange: Range<Date> { startsAt..<endsAt }
 }
