@@ -23,14 +23,8 @@ public struct ForceCharger {
 
     private let provider: ForceChargerRangeProvider
 
-    private let sender: ForceChargerRangeSender
-
-    public init(
-        provider: ForceChargerRangeProvider,
-        sender: ForceChargerRangeSender
-    ) {
+    public init(provider: ForceChargerRangeProvider) {
         self.provider = provider
-        self.sender = sender
     }
 
     public func execute(at date: Date = Date()) async throws -> ForceChargerResult {
@@ -43,7 +37,7 @@ public struct ForceCharger {
 
         // Skip execution when ranges contains any item which was sent already
         let containsSent = forceChargingRanges.contains(where: { $0.value.state == .sent })
-        guard !containsSent else { return .skipped(reason: .containsSent) }
+        guard !containsSent else { return .skip(reason: .containsSent) }
 
         // Get planned ranges and those who are in threshold already
         let plannedRanges = forceChargingRanges.filter { $0.value.state == .planned }
@@ -52,15 +46,12 @@ public struct ForceCharger {
         // Check if we reached the minimum number of ranges, or if anything is in threshold
         let reachedMinimum = plannedRanges.count >= minimumNumberOfRanges
         let hasPlanedRangesInTreshold = !plannedRangesInThreshold.isEmpty
-        guard reachedMinimum || hasPlanedRangesInTreshold else { return .skipped(reason: .waitForMinimumOfRanges) }
+        guard reachedMinimum || hasPlanedRangesInTreshold else { return .skip(reason: .waitForMinimumOfRanges) }
 
         // Get maxmimum number of planned ranges
         let firstMaxPlannedRanges = Array(plannedRanges.prefix(maximumNumberOfRanges))
 
-        // Send ranges
-        try await sender.send(ranges: firstMaxPlannedRanges)
-
-        return .sent(ranges: firstMaxPlannedRanges)
+        return .send(ranges: firstMaxPlannedRanges)
     }
 
     private func planningDateRange(at date: Date) -> Range<Date> { date..<date.addingTimeInterval(planningRange) }
@@ -72,13 +63,9 @@ public protocol ForceChargerRangeProvider {
     func forceChargingRanges(in range: Range<Date>) async throws -> [Stored<ForceChargingRange>]
 }
 
-public protocol ForceChargerRangeSender {
-    func send(ranges: [Stored<ForceChargingRange>]) async throws
-}
-
 public enum ForceChargerResult: Equatable {
-    case skipped(reason: ForceChargerSkipReason)
-    case sent(ranges: [Stored<ForceChargingRange>])
+    case skip(reason: ForceChargerSkipReason)
+    case send(ranges: [Stored<ForceChargingRange>])
 }
 
 public enum ForceChargerSkipReason: Equatable {

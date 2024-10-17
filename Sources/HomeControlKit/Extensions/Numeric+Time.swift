@@ -8,6 +8,7 @@
 import Foundation
 
 public extension Numeric {
+    var seconds: Self { self }
     var minutes: Self { self * 60 }
     var hours: Self { minutes * 60 }
     var days: Self { hours * 24 }

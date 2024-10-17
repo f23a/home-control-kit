@@ -1,6 +1,6 @@
 //
 //  InverterReading.swift
-//  HomeControlKit
+//  home-control-kit
 //
 //  Created by Christoph Pageler on 30.04.24.
 //

@@ -1,6 +1,6 @@
 //
 //  Environment.swift
-//  HomeControlKit
+//  home-control-kit
 //
 //  Created by Christoph Pageler on 28.09.24.
 //

@@ -1,6 +1,6 @@
 //
 //  WebSocketSettings.swift
-//  HomeControlKit
+//  home-control-kit
 //
 //  Created by Christoph Pageler on 21.09.24.
 //
