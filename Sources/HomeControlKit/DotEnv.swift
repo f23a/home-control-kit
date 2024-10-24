@@ -1,5 +1,5 @@
 //
-//  Environment.swift
+//  DotEnv.swift
 //  home-control-kit
 //
 //  Created by Christoph Pageler on 28.09.24.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum Environment {
+public enum DotEnv {
     private static var cachedFileContent: [String: Any]?
     private static var fileContent: [String: Any] {
         if let cachedFileContent {
