@@ -7,35 +7,52 @@
 
 import Foundation
 
-public enum DotEnv {
-    private static var cachedFileContent: [String: Any]?
-    private static var fileContent: [String: Any] {
-        if let cachedFileContent {
-            return cachedFileContent
-        }
+public class DotEnv {
+    private var url: URL
+    private var fileContent: [String: Any]?
 
+    public init(url: URL) throws(Error) {
+        self.url = url
+        try readFileContent()
+    }
+
+    public static func fromMainBundle() throws(Error) -> DotEnv {
         guard let url = Bundle.main.url(forResource: ".env", withExtension: "json") else {
-            fatalError("Failed to get .env.json url")
+            throw .failedToBuildURL
         }
+        return try DotEnv(url: url)
+    }
 
+    public static func fromWorkingDirectory() throws(Error) -> DotEnv {
+        let workingDirectory = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+        return try DotEnv(url: workingDirectory.appending(path: ".env.json"))
+    }
+
+    private func readFileContent() throws(Error) {
         guard let data = try? Data(contentsOf: url) else {
-            fatalError("Failed to load .env.json content")
+            throw .failedToLoadFile
         }
 
         guard let jsonObject = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
-            fatalError("Failed to parse .env.json data")
+            throw .failedToParseFile
         }
 
-        cachedFileContent = jsonObject
-        return jsonObject
+        fileContent = jsonObject
     }
 
-    public static func get(_ key: String) -> String? {
-        return fileContent[key] as? String
+    public func get(_ key: String) -> String? {
+        return fileContent?[key] as? String
     }
 
-    public static func require(_ key: String) -> String {
-        guard let value = get(key) else { fatalError("Failed to get environment variable \(key)") }
+    public func require(_ key: String) throws(Error) -> String {
+        guard let value = get(key) else { throw .failedToGetEnvironmentVariable }
         return value
+    }
+
+    public enum Error: Swift.Error {
+        case failedToBuildURL
+        case failedToLoadFile
+        case failedToParseFile
+        case failedToGetEnvironmentVariable
     }
 }
