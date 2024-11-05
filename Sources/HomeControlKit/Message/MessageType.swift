@@ -6,5 +6,8 @@
 //
 
 public enum MessageType: String, Codable, Equatable, Hashable, Sendable {
-    case adapterSungrowInverter
+    case inverterForceChargingEnabled
+    case inverterForceChargingDisabled
+
+    case electricityPricesUpdated
 }
