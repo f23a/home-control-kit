@@ -8,19 +8,27 @@
 import Foundation
 
 public struct ForceChargingRangeQuery: Codable {
-    public var range: Range?
+    public var pagination: QueryPagination
+    public var filter: [ForceChargingRangeQueryFilter]
+    public var sort: QuerySort<ForceChargingRangeQuerySort>
 
-    public init(range: Range? = nil) {
-        self.range = range
+    public init(
+        pagination: QueryPagination,
+        filter: [ForceChargingRangeQueryFilter],
+        sort: QuerySort<ForceChargingRangeQuerySort>
+    ) {
+        self.pagination = pagination
+        self.filter = filter
+        self.sort = sort
     }
+}
 
-    public struct Range: Codable {
-        public var startsAt: Date
-        public var endsAt: Date
+public enum ForceChargingRangeQueryFilter: Codable {
+    case startsAt(_ filter: QueryFilter<Date>)
+    case endsAt(_ filter: QueryFilter<Date>)
+}
 
-        public init(startsAt: Date, endsAt: Date) {
-            self.startsAt = startsAt
-            self.endsAt = endsAt
-        }
-    }
+public enum ForceChargingRangeQuerySort: String, Codable {
+    case startsAt
+    case endsAt
 }

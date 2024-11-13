@@ -8,19 +8,25 @@
 import Foundation
 
 public struct ElectricityPriceQuery: Codable {
-    public var range: Range?
+    public var pagination: QueryPagination
+    public var filter: [ElectricityPriceQueryFilter]
+    public var sort: QuerySort<ElectrityPriceQuerySort>
 
-    public init(range: Range? = nil) {
-        self.range = range
+    public init(
+        pagination: QueryPagination,
+        filter: [ElectricityPriceQueryFilter],
+        sort: QuerySort<ElectrityPriceQuerySort>
+    ) {
+        self.pagination = pagination
+        self.filter = filter
+        self.sort = sort
     }
+}
 
-    public struct Range: Codable {
-        public var startsAt: Date
-        public var endsAt: Date
+public enum ElectricityPriceQueryFilter: Codable {
+    case startsAt(_ filter: QueryFilter<Date>)
+}
 
-        public init(startsAt: Date, endsAt: Date) {
-            self.startsAt = startsAt
-            self.endsAt = endsAt
-        }
-    }
+public enum ElectrityPriceQuerySort: String, Codable {
+    case startsAt
 }

@@ -10,4 +10,6 @@ public enum MessageType: String, Codable, Equatable, Hashable, Sendable {
     case inverterForceChargingDisabled
 
     case electricityPricesUpdated
+
+    case chargeFinderCreatedForceChargingRanges
 }
