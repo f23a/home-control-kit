@@ -11,14 +11,10 @@ public struct ForceCharger {
     /// Amout of time where the force charger is looking into the future searching for ranges
     public var planningRange: TimeInterval = 24.hours
 
-    /// Minimum number of ranges, that must be inside the planning range, to allow sending the ranges
-    public var minimumNumberOfRanges: Int = 2
-
-    /// Maximum umber of ranges, that will be sent
+    /// Maximum number of ranges, that will be sent
     public var maximumNumberOfRanges: Int = 2
 
     /// `threshold` is calculated from the beginning of `planningRange`, for example the first 2h of 24h
-    /// When there is a planning range inside `threshold`, `minimumNumberOfRanges` is ignored and sending the ranges is allowed
     public var threshold: TimeInterval = 2.hours
 
     private let provider: ForceChargerRangeProvider
@@ -43,10 +39,9 @@ public struct ForceCharger {
         let plannedRanges = forceChargingRanges.filter { $0.value.state == .planned }
         let plannedRangesInThreshold = plannedRanges.filter { $0.value.dateRange.overlaps(thresholdDateRange) }
 
-        // Check if we reached the minimum number of ranges, or if anything is in threshold
-        let reachedMinimum = plannedRanges.count >= minimumNumberOfRanges
+        // Check if we reached the threshold
         let hasPlanedRangesInTreshold = !plannedRangesInThreshold.isEmpty
-        guard reachedMinimum || hasPlanedRangesInTreshold else { return .skip(reason: .waitForMinimumOfRanges) }
+        guard hasPlanedRangesInTreshold else { return .skip(reason: .waitForThreshold) }
 
         // Get maxmimum number of planned ranges
         let firstMaxPlannedRanges = Array(plannedRanges.prefix(maximumNumberOfRanges))
@@ -70,5 +65,5 @@ public enum ForceChargerResult: Equatable {
 
 public enum ForceChargerSkipReason: Equatable {
     case containsSent
-    case waitForMinimumOfRanges
+    case waitForThreshold
 }
