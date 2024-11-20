@@ -26,6 +26,8 @@ public struct ForceChargingRangeQuery: Codable {
 public enum ForceChargingRangeQueryFilter: Codable {
     case startsAt(_ filter: QueryFilter<Date>)
     case endsAt(_ filter: QueryFilter<Date>)
+    case state(_ state: ForceChargingRangeState)
+    case source(_ source: ForceChargingRangeSource)
 }
 
 public enum ForceChargingRangeQuerySort: String, Codable {
