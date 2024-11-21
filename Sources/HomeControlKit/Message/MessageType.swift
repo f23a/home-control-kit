@@ -12,4 +12,6 @@ public enum MessageType: String, Codable, Equatable, Hashable, Sendable {
     case electricityPricesUpdated
 
     case chargeFinderCreatedForceChargingRanges
+
+    case wallboxEcomaticDidUpdateLogicMode
 }
