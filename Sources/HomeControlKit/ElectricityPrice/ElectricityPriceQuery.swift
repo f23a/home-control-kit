@@ -10,12 +10,12 @@ import Foundation
 public struct ElectricityPriceQuery: Codable {
     public var pagination: QueryPagination
     public var filter: [ElectricityPriceQueryFilter]
-    public var sort: QuerySort<ElectrityPriceQuerySort>
+    public var sort: QuerySort<ElectricityPriceQuerySort>
 
     public init(
         pagination: QueryPagination,
         filter: [ElectricityPriceQueryFilter],
-        sort: QuerySort<ElectrityPriceQuerySort>
+        sort: QuerySort<ElectricityPriceQuerySort>
     ) {
         self.pagination = pagination
         self.filter = filter
@@ -27,6 +27,6 @@ public enum ElectricityPriceQueryFilter: Codable {
     case startsAt(_ filter: QueryFilter<Date>)
 }
 
-public enum ElectrityPriceQuerySort: String, Codable {
+public enum ElectricityPriceQuerySort: String, Codable {
     case startsAt
 }

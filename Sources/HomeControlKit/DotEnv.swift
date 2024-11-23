@@ -8,7 +8,7 @@
 import Foundation
 
 public struct DotEnv<T: Codable> {
-    private(set) var content: T
+    public private(set) var content: T
 
     public init(string: String) throws(DotEnvError) {
         guard let data = string.data(using: .utf8) else { throw .failedToLoadContent }
