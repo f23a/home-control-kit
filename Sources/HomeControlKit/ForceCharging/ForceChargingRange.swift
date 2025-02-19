@@ -13,19 +13,22 @@ public struct ForceChargingRange: Codable, Equatable, Hashable {
     public var targetStateOfCharge: Double
     public var state: ForceChargingRangeState
     public var source: ForceChargingRangeSource
+    public var isVehicleChargingAllowed: Bool
 
     public init(
         startsAt: Date,
         endsAt: Date,
         targetStateOfCharge: Double,
         state: ForceChargingRangeState,
-        source: ForceChargingRangeSource
+        source: ForceChargingRangeSource,
+        isVehicleChargingAllowed: Bool
     ) {
         self.startsAt = startsAt
         self.endsAt = endsAt
         self.targetStateOfCharge = targetStateOfCharge
         self.state = state
         self.source = source
+        self.isVehicleChargingAllowed = isVehicleChargingAllowed
     }
 
     public var dateRange: Range<Date> { startsAt..<endsAt }
