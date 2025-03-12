@@ -14,6 +14,8 @@ public struct ChargeFinderSettings: Codable {
     public var minimumForceChargingRangeTimeInterval: TimeInterval
     public var maximumForceChargingRangeTimeInterval: TimeInterval
     public var maximumElectricityPrice: Double
+    public var isVehicleChargingAllowed: Bool?
+    public var targetStateOfCharge: Double?
 
     public init(
         rangeTimeInterval: TimeInterval,
@@ -21,7 +23,9 @@ public struct ChargeFinderSettings: Codable {
         compareRangePercentage: Double,
         minimumForceChargingRangeTimeInterval: TimeInterval,
         maximumForceChargingRangeTimeInterval: TimeInterval,
-        maximumElectricityPrice: Double
+        maximumElectricityPrice: Double,
+        isVehicleChargingAllowed: Bool?,
+        targetStateOfCharge: Double?
     ) {
         self.rangeTimeInterval = rangeTimeInterval
         self.numberOfCompareRanges = numberOfCompareRanges
@@ -29,5 +33,7 @@ public struct ChargeFinderSettings: Codable {
         self.minimumForceChargingRangeTimeInterval = minimumForceChargingRangeTimeInterval
         self.maximumForceChargingRangeTimeInterval = maximumForceChargingRangeTimeInterval
         self.maximumElectricityPrice = maximumElectricityPrice
+        self.isVehicleChargingAllowed = isVehicleChargingAllowed
+        self.targetStateOfCharge = targetStateOfCharge
     }
 }
